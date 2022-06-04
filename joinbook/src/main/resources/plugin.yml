@@ -1,0 +1,9 @@
+name: JoinBook
+author: Bongle
+main: top.zengarden.joinbook.JoinBook
+version: $version
+prefix: JoinBook
+api-version: 1.18
+commands:
+  joinbook:
+  opengui:

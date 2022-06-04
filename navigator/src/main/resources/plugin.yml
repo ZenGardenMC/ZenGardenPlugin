@@ -1,0 +1,8 @@
+name: JoinBook
+author: Bongle
+main: top.zengarden.navigator.Navigator
+version: $version
+prefix: JoinBook
+api-version: 1.18
+commands:
+  navigator:
