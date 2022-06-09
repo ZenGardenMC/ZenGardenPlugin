@@ -1,0 +1,3 @@
+# ZenGardenPlugin
+ZenGarden的自制插件！
+ZenGarden是个热爱开源的公益组织，使用AGPL License发布一些实用的插件
