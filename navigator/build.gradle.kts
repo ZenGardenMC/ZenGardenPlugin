@@ -25,6 +25,9 @@ dependencies {
     // HikariCP
     implementation("com.zaxxer:HikariCP:4.0.3")
 
+    // Particles
+    implementation("xyz.xenondevs:particle:1.7.1")
+
 }
 
 tasks {
@@ -36,6 +39,7 @@ tasks {
             exclude(dependency("org.slf4j:.*"))
         }
 
+        relocate("xyz.xenondevs", "top.zengarden.libs.xyz.xenondevs")
         relocate("kotlin", "top.zengarden.libs.kotlin")
         relocate("org.jetbrains", "top.zengarden.libs.org.jetbrains")
         relocate("com.zaxxer", "top.zengarden.libs.com.zaxxer")

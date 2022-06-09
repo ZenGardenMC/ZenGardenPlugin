@@ -10,12 +10,14 @@ import kotlin.reflect.KProperty
 /**
  * @name Config
  * @author Bongle
- * @version v3.0
+ * @version v3.2
  */
 abstract class Config(name: String) {
 
     private val file: File
     var yml: YamlConfiguration
+    private val properties = mutableListOf<Property<*>>()
+    private val propertiesNullable = mutableListOf<PropertyNullable<*>>()
 
     init {
         val folder = instance.dataFolder
@@ -27,13 +29,26 @@ abstract class Config(name: String) {
 
     open fun reload() {
         yml = YamlConfiguration.loadConfiguration(file)
+        properties.forEach {
+            it.value = null
+        }
+        propertiesNullable.forEach {
+            it.init = false
+            it.value = null
+        }
     }
 
-    fun <T : Any> value(path: String, default: T) = Property(path, default)
+    fun <T : Any> value(path: String, default: T) = Property(path, default).also {
+        properties.add(it)
+    }
 
-    fun <T : Any?> valueOrNull(path: String, default: T?) = Property(path, default)
+    fun <T : Any?> valueOrNull(path: String, default: T?) = PropertyNullable(path, default).also {
+        propertiesNullable.add(it)
+    }
 
-    fun location(path: String, default: Location?) = PropertyNullable(path, default)
+    fun location(path: String, default: Location?) = PropertyNullable(path, default).also {
+        propertiesNullable.add(it)
+    }
 
     fun save() {
         yml.save(file)
@@ -46,14 +61,21 @@ class PropertyNullable<T>(
     private val default: T?,
 ) {
 
+    var value: T? = null
+    var init = false
+
     operator fun getValue(cfg: Config, prop: KProperty<*>): T? {
-        var value = cfg.yml.get(path)
-        if (value == null) {
-            cfg.yml.set(path, default)
-            cfg.save()
-            value = default
+        if (init && value == null) return null
+        if (default == null) {
+            return value ?: (cfg.yml.get(path) as? T).also {
+                init = true
+            }
         }
-        return value as T?
+        return value ?: cfg.yml.get(path) as? T ?: default.also {
+            cfg.yml.set(path, value)
+            cfg.save()
+            init = true
+        }
     }
 
     operator fun setValue(cfg: Config, property: KProperty<*>, any: T?) {
@@ -68,14 +90,13 @@ class Property<T>(
     private val default: T,
 ) {
 
+    var value: T? = null
+
     operator fun getValue(cfg: Config, prop: KProperty<*>): T {
-        var value = cfg.yml.get(path)
-        if (value == null) {
-            cfg.yml.set(path, default)
+        return value ?: cfg.yml.get(path) as? T ?: default.also {
+            cfg.yml.set(path, value)
             cfg.save()
-            value = default
         }
-        return value as T
     }
 
 

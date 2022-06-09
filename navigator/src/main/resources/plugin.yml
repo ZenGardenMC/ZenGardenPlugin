@@ -1,8 +1,10 @@
-name: JoinBook
+name: Navigator
 author: Bongle
 main: top.zengarden.navigator.Navigator
 version: $version
-prefix: JoinBook
+prefix: Navigator
 api-version: 1.18
+softdepend:
+  - PlaceholderAPI
 commands:
   navigator:

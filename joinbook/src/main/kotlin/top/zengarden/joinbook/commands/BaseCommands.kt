@@ -13,7 +13,7 @@ class BaseCommands : CommandExecutor {
             sender.sendMessage("§c该指令仅玩家使用！")
             return true
         }
-        p.showJoinBook()
+        p. showJoinBook()
         return true
     }
 
