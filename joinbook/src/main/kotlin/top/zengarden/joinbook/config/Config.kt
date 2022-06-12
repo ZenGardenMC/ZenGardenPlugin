@@ -10,7 +10,7 @@ import kotlin.reflect.KProperty
 /**
  * @name Config
  * @author Bongle
- * @version v3.2
+ * @version v3.3
  */
 abstract class Config(name: String) {
 
@@ -72,8 +72,9 @@ class PropertyNullable<T>(
             }
         }
         return value ?: cfg.yml.get(path) as? T ?: default.also {
-            cfg.yml.set(path, value)
+            cfg.yml.set(path, it)
             cfg.save()
+            value = it
             init = true
         }
     }
@@ -94,8 +95,9 @@ class Property<T>(
 
     operator fun getValue(cfg: Config, prop: KProperty<*>): T {
         return value ?: cfg.yml.get(path) as? T ?: default.also {
-            cfg.yml.set(path, value)
+            cfg.yml.set(path, it)
             cfg.save()
+            value = it
         }
     }
 
