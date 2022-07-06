@@ -24,10 +24,10 @@ class Navigator : JavaPlugin() {
 
     override fun onEnable() {
         instance = this
-        log("§a$PLUGIN_NAME enabled v$VERSION By $AUTHOR")
         DataListener()
         Bukkit.getPluginManager().getPlugin("PlaceholderAPI")?.let {
-            PlaceholderHook()
+            PlaceholderHook().register()
+            log("§aPlaceholderAPI Hooked!")
         }
         ConfigurationSerialization.registerClass(PathNavigator::class.java, "PathNavigator")
         ConfigurationSerialization.registerClass(Checkpoint::class.java, "Checkpoint")
@@ -35,6 +35,7 @@ class Navigator : JavaPlugin() {
         NavigatorConfig
         StorageManager.init()
         Bukkit.getPluginCommand("navigator")?.setExecutor(AdminCommands())
+        log("§a$PLUGIN_NAME enabled v$VERSION By $AUTHOR")
     }
 
     override fun onDisable() {

@@ -45,7 +45,6 @@ class MySQL : StorageEngine {
 
     private fun createTable() {
         val conn = hikari.connection
-        conn.createStatement()
         val stmt = conn.createStatement()
         stmt.executeUpdate(
             "CREATE TABLE IF NOT EXISTS `navigator`(" +

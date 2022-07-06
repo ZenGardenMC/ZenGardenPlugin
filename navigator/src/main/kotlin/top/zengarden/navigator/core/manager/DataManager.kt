@@ -1,5 +1,6 @@
 package top.zengarden.navigator.core.manager
 
+import me.clip.placeholderapi.PlaceholderAPI
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy
 import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity
 import org.bukkit.Bukkit
@@ -78,8 +79,10 @@ class DataManager(
                     nextCheckPoint()
                     return
                 }
-                nav.cmds.forEach { cmd ->
-                    p.performCommand(cmd)
+                instance.runTask {
+                    nav.cmds.forEach { cmd ->
+                        p.performCommand(PlaceholderAPI.setBracketPlaceholders(p, cmd))
+                    }
                 }
                 particle?.cancel()
                 particle = null

@@ -1,5 +1,6 @@
 package top.zengarden.navigator.commands
 
+import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
